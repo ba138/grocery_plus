@@ -14,7 +14,7 @@ class SplashPhonenumberScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
               Image.asset("images/phone_image.png"),
               const SizedBox(
@@ -57,7 +57,7 @@ class SplashPhonenumberScreen extends StatelessWidget {
                                   BorderSide(color: Colors.transparent))),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 50,
                     ),
                     PrimaryButton(
                       title: "Next",

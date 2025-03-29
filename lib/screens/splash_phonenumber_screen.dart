@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/widgets/custom_text_field.dart';
 import 'package:grocery_plus/widgets/primary_button.dart';
 
-class SplashPhonenumberScreen extends StatelessWidget {
+class SplashPhonenumberScreen extends StatefulWidget {
   const SplashPhonenumberScreen({super.key});
+
+  @override
+  State<SplashPhonenumberScreen> createState() =>
+      _SplashPhonenumberScreenState();
+}
+
+class _SplashPhonenumberScreenState extends State<SplashPhonenumberScreen> {
+  final TextEditingController phoneController = TextEditingController();
+  String? name;
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +59,10 @@ class SplashPhonenumberScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Phone Number",
-                          prefixIcon: Icon(Icons.phone_outlined),
-                          fillColor: Color(0xffF0F1F2),
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent))),
+                    CustomTextField(
+                      hintText: "Phone Number",
+                      prefixIcon: Icon(Icons.person),
+                      controller: phoneController,
                     ),
                     SizedBox(
                       height: 50,
@@ -62,6 +70,11 @@ class SplashPhonenumberScreen extends StatelessWidget {
                     PrimaryButton(
                       title: "Next",
                       icon: Icons.arrow_forward,
+                      ontap: () {
+                        setState(() {
+                          name = "Ali";
+                        });
+                      },
                     )
                   ],
                 ),

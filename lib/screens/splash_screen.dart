@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grocery_plus/screens/splash_phonenumber_screen.dart';
+import 'package:grocery_plus/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,10 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   manageSession() async {
     await Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (c) => SplashPhonenumberScreen()),
-          (route) => false);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
     });
   }
 

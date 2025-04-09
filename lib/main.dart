@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_plus/constants/colors.dart';
 import 'package:grocery_plus/screens/splash_screen.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         useMaterial3: true,
       ),
       home: SplashScreen(),

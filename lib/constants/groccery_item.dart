@@ -22,13 +22,6 @@ class GrocceryItem {
       "price": "400",
     },
     {
-      "title": "Carrot",
-      "image":
-          "https://png.pngtree.com/png-clipart/20230927/original/pngtree-single-fresh-orange-carrot-vegetable-isolated-with-clipping-path-and-shadow-png-image_13160551.png",
-      "rating": "4.9",
-      "price": "100",
-    },
-    {
       "title": "Avocado",
       "image":
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxGzoqyQPG2zDJPYeh3qm8UfvVVfmn6DEK9Q&s",

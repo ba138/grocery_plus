@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/user_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
 import 'package:grocery_plus/screens/login_screen.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
@@ -19,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passswordController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
+  var fireStore = FirebaseFirestore.instance;
   bool isLoading = false;
   Future<void> registerUser(String email, String password) async {
     setState(() {
@@ -31,6 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         userCredential.user!.sendEmailVerification();
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Verification email sent to ${email}")));
+        UserModel userData = UserModel(
+            uid: auth.currentUser!.uid,
+            username: nameController.text,
+            email: email,
+            phone: phoneController.text);
+        await fireStore
+            .collection("Users")
+            .doc(auth.currentUser!.uid)
+            .set(userData.toMap());
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => LoginScreen()));
       }

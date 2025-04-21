@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
 import 'package:grocery_plus/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
     manageSession();
@@ -18,8 +21,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   manageSession() async {
     await Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
+      if (auth.currentUser!.emailVerified) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (c) => BottomNavBar()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
+      }
     });
   }
 

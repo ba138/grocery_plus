@@ -33,11 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      if (userCredential.user!.emailVerified) {
+      if (userCredential.user != null && userCredential.user!.emailVerified) {
         Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (c) => BottomNavBar()),
-            (route) => false);
+          context,
+          MaterialPageRoute(builder: (c) => BottomNavBar()),
+          (route) => false,
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('User is not Verfied or Did not Exsist')));

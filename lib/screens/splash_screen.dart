@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   manageSession() async {
     await Future.delayed(Duration(seconds: 3), () {
-      if (auth.currentUser!.emailVerified) {
+      if (auth.currentUser!.emailVerified && auth.currentUser != null) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (c) => BottomNavBar()),

@@ -33,15 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-      if (userCredential.user?.emailVerified == false ||
-          auth.currentUser?.uid == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User is not Verfied or Did not Exsist')));
-      } else {
+      if (userCredential.user!.emailVerified) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (c) => BottomNavBar()),
             (route) => false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('User is not Verfied or Did not Exsist')));
       }
     } on FirebaseAuthException catch (e) {
       debugPrint("this is the error${e.code}");

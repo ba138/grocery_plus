@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
@@ -16,7 +17,41 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
+  FirebaseAuth auth = FirebaseAuth.instance;
   String? name;
+  Future<void> loginUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please Fill All The Fields')));
+        return;
+      }
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      if (userCredential.user != null && userCredential.user!.emailVerified) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (c) => BottomNavBar()),
+          (route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('User is not Verfied or Did not Exsist')));
+      }
+    } on FirebaseAuthException catch (e) {
+      debugPrint("this is the error${e.code}");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -109,10 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: "Next",
                       icon: Icons.arrow_forward,
                       ontap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            (MaterialPageRoute(builder: (c) => BottomNavBar())),
-                            (route) => false);
+                        loginUser();
                       },
                     ),
                     const SizedBox(

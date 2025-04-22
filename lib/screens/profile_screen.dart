@@ -1,8 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_plus/screens/login_screen.dart';
 import 'package:grocery_plus/widgets/profile_widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  var auth = FirebaseAuth.instance;
+  Future<void> logout() async {
+    try {
+      await auth.signOut();
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
+    } on FirebaseAuthException catch (e) {
+      debugPrint("this is the error${e.code}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +33,11 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             ProfileWidget(
-                leadingIcon: Icons.logout, title: "Logout", ontap: () {})
+                leadingIcon: Icons.logout,
+                title: "Logout",
+                ontap: () {
+                  logout();
+                }),
           ],
         ),
       ),

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
+  final int maxLines;
   final Icon? suffixIcon;
   final Function()? ontap;
   final TextEditingController controller;
   const CustomTextField({
     super.key,
     required this.hintText,
-    required this.prefixIcon,
+    this.maxLines = 1,
+    this.prefixIcon,
     required this.controller,
     this.suffixIcon,
     this.ontap,
@@ -18,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      maxLines: maxLines,
       controller: controller,
       decoration: InputDecoration(
           border: InputBorder.none,

@@ -42,7 +42,7 @@ class _UploadItemsState extends State<UploadItems> {
       isLoading = true;
     });
     try {
-      var imageUrl = uploadImageToFirebaseStorage(imageFile!);
+      // var imageUrl = uploadImageToFirebaseStorage(imageFile!);
       var productId = Uuid().v1();
       Items items = Items(
           name: nameController.text,

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:grocery_plus/constants/colors.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
 import 'package:grocery_plus/widgets/primary_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UploadItems extends StatefulWidget {
   const UploadItems({super.key});
@@ -14,6 +17,19 @@ class _UploadItemsState extends State<UploadItems> {
   var nameController = TextEditingController();
   var diController = TextEditingController();
   var priceController = TextEditingController();
+  XFile? imageFile;
+  final ImagePicker picker = ImagePicker();
+  Future<void> pickImage() async {
+    try {
+      final XFile? selectedImage =
+          await picker.pickImage(source: ImageSource.camera);
+      setState(() {
+        imageFile = selectedImage;
+      });
+    } catch (e) {
+      debugPrint("Error while picking image: $e");
+    }
+  }
 
   @override
   void dispose() {
@@ -41,9 +57,18 @@ class _UploadItemsState extends State<UploadItems> {
                   ),
                   border: Border.all(color: AppColors.fontColor, width: 1),
                 ),
-                child: Center(
-                  child: Icon(Icons.add_a_photo),
-                ),
+                child: imageFile != null
+                    ? Image.file(
+                        File(imageFile!.path),
+                        fit: BoxFit.cover,
+                      )
+                    : Center(
+                        child: InkWell(
+                            onTap: () {
+                              pickImage();
+                            },
+                            child: Icon(Icons.add_a_photo)),
+                      ),
               ),
               const SizedBox(
                 height: 20,

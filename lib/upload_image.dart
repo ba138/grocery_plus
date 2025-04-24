@@ -1,20 +1,25 @@
-// Future<String> _uploadImageToFirebaseStorage(XFile image) async {
-//   // Get a reference to Firebase Storage
-//   FirebaseStorage storage = FirebaseStorage.instance;
+import 'dart:io';
 
-//   String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
-//   Reference ref = storage.ref().child('images/$fileName');
+Future<String> uploadImageToFirebaseStorage(XFile image) async {
+  // Get a reference to Firebase Storage
+  FirebaseStorage storage = FirebaseStorage.instance;
 
-//   try {
-//     UploadTask uploadTask = ref.putFile(File(image.path));
+  String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
-//     TaskSnapshot taskSnapshot = await uploadTask;
+  Reference ref = storage.ref().child('images/$fileName');
 
-//     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-//     return downloadUrl; 
-//   } catch (e) {
-//     print("Error uploading image: $e");
-//     return ""; 
-//   }
-// }
+  try {
+    UploadTask uploadTask = ref.putFile(File(image.path));
+
+    TaskSnapshot taskSnapshot = await uploadTask;
+
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  } catch (e) {
+    print("Error uploading image: $e");
+    return "";
+  }
+}

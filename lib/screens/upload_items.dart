@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_plus/Models/grocery_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
+import 'package:grocery_plus/screens/bottom_Nav_bar.dart';
 import 'package:grocery_plus/upload_image.dart';
 import 'package:grocery_plus/widgets/custom_text_field.dart';
 import 'package:grocery_plus/widgets/primary_button.dart';
@@ -42,15 +43,20 @@ class _UploadItemsState extends State<UploadItems> {
       isLoading = true;
     });
     try {
-      // var imageUrl = uploadImageToFirebaseStorage(imageFile!);
+      var imageUrl = await uploadImageToFirebaseStorage(imageFile!);
       var productId = Uuid().v1();
       Items items = Items(
           name: nameController.text,
-          imageUrl: "imageUrl.toString()",
+          imageUrl: imageUrl,
           descritpion: diController.text,
           price: priceController.text,
           productId: productId);
       await firestore.collection("products").doc(productId).set(items.toJson());
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomNavBar(),
+          ));
     } catch (e) {
       debugPrint("Error while uploading data: $e");
     } finally {

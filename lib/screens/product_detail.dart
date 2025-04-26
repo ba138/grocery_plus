@@ -3,10 +3,15 @@ import 'package:grocery_plus/Models/grocery_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
 import 'package:grocery_plus/widgets/primary_button.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Items items;
   const ProductDetailScreen({super.key, required this.items});
 
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +35,8 @@ class ProductDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.fontColor, width: 1),
                   image: DecorationImage(
-                      image: NetworkImage(items.imageUrl), fit: BoxFit.cover)),
+                      image: NetworkImage(widget.items.imageUrl),
+                      fit: BoxFit.cover)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -52,11 +58,11 @@ class ProductDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  items.name,
+                  widget.items.name,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  items.price,
+                  widget.items.price,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -64,7 +70,7 @@ class ProductDetailScreen extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                items.descritpion,
+                widget.items.descritpion,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ),

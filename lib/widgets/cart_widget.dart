@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/grocery_model.dart';
 
 class CartWidget extends StatelessWidget {
-  const CartWidget({super.key});
+  final Items items;
+  final Function() onDelete;
+  CartWidget({super.key, required this.onDelete, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +17,8 @@ class CartWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.asset(
-                  "images/splash_image.png",
+                Image.network(
+                  items.imageUrl,
                   height: 60,
                   width: 60,
                 ),
@@ -26,12 +29,12 @@ class CartWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Product Name",
+                      items.name,
                       style: GoogleFonts.poppins(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Product Name",
+                      items.price,
                       style: GoogleFonts.poppins(
                           fontSize: 16, fontWeight: FontWeight.w300),
                     )
@@ -39,7 +42,7 @@ class CartWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Icon(Icons.delete),
+            InkWell(onTap: onDelete, child: Icon(Icons.delete)),
           ],
         ),
       ),

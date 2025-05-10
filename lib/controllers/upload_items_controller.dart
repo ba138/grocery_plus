@@ -29,11 +29,11 @@ class UploadItemsController extends GetxController {
   void uploadData(String name, String discription, String price) async {
     try {
       Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
-      var imageUrl = await uploadImageToFirebaseStorage(pickedImage.value!);
+      // var imageUrl = await uploadImageToFirebaseStorage(pickedImage.value!);
       var productId = Uuid().v1();
       Items items = Items(
           name: name,
-          imageUrl: imageUrl,
+          imageUrl: "imageUrl",
           descritpion: discription,
           price: price,
           productId: productId);

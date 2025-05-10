@@ -8,8 +8,8 @@ class HomeShimmerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-        baseColor: AppColors.primaryColor.withValues(alpha: 0.8),
-        highlightColor: Colors.grey.shade400,
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
         child: Container(
           height: MediaQuery.of(context).size.height * 0.2,
           width: MediaQuery.of(context).size.width * 0.4,

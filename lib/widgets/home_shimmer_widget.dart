@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_plus/constants/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeShimmerWidget extends StatelessWidget {

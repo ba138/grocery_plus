@@ -21,36 +21,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   bool isLoading = false;
   bool inWishList = false;
 
-  Future<void> addToWishList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      Items items = Items(
-          name: widget.items.name,
-          imageUrl: widget.items.imageUrl,
-          descritpion: widget.items.descritpion,
-          price: widget.items.price,
-          productId: widget.items.productId);
-      await firestore
-          .collection('users')
-          .doc(auth.currentUser!.uid)
-          .collection('wishList')
-          .doc(widget.items.productId)
-          .set(items.toJson());
-      setState(() {
-        isLoading = false;
-        inWishList = true;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Item added to wishlist"),
-        backgroundColor: AppColors.primaryColor,
-      ));
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
   Future<void> checkWishList() async {
     try {
       var docSnapshot = await firestore
@@ -140,7 +110,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               onTap: () {
                                 if (inWishList) {
                                   removeFromWishList();
-                                } else {}
+                                } else {
+                                  controller.addToWishList(
+                                      widget.items.name,
+                                      widget.items.imageUrl,
+                                      widget.items.descritpion,
+                                      widget.items.price,
+                                      widget.items.productId);
+                                }
                               },
                               child: Obx(
                                 () => Icon(

@@ -45,7 +45,7 @@ class ProductDetailController extends GetxController {
   void checkWishList(String productId) {
     try {
       firestore
-          .collection('users')
+          .collection('Users')
           .doc(auth.currentUser!.uid)
           .collection('wishList')
           .doc(productId)
@@ -54,6 +54,28 @@ class ProductDetailController extends GetxController {
         inWishList.value = data.exists;
         debugPrint("this is the value of item in wishList${inWishList.value}");
       });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> addToWishList(String name, String imageUrl, String description,
+      String price, String productId) async {
+    try {
+      Items items = Items(
+          name: name,
+          imageUrl: imageUrl,
+          descritpion: description,
+          price: price,
+          productId: productId);
+      await firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('wishList')
+          .doc(productId)
+          .set(items.toJson());
+
+      Get.snackbar("Added", "Item Added to WishList");
     } catch (e) {
       debugPrint(e.toString());
     }

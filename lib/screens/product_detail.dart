@@ -19,83 +19,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   var firestore = FirebaseFirestore.instance;
   var auth = FirebaseAuth.instance;
   bool isLoading = false;
-  bool inWishList = false;
-
-  Future<void> addToWishList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      Items items = Items(
-          name: widget.items.name,
-          imageUrl: widget.items.imageUrl,
-          descritpion: widget.items.descritpion,
-          price: widget.items.price,
-          productId: widget.items.productId);
-      await firestore
-          .collection('users')
-          .doc(auth.currentUser!.uid)
-          .collection('wishList')
-          .doc(widget.items.productId)
-          .set(items.toJson());
-      setState(() {
-        isLoading = false;
-        inWishList = true;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Item added to wishlist"),
-        backgroundColor: AppColors.primaryColor,
-      ));
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  Future<void> checkWishList() async {
-    try {
-      var docSnapshot = await firestore
-          .collection('Users')
-          .doc(auth.currentUser!.uid)
-          .collection('wishList')
-          .doc(widget.items.productId)
-          .get();
-      if (docSnapshot.exists) {
-        setState(() {
-          inWishList = true;
-        });
-      } else {
-        setState(() {
-          inWishList = false;
-        });
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  Future<void> removeFromWishList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      await firestore
-          .collection('Users')
-          .doc(auth.currentUser!.uid)
-          .collection('wishList')
-          .doc(widget.items.productId)
-          .delete();
-      setState(() {
-        isLoading = false;
-        inWishList = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Item removed from wishlist"),
-        backgroundColor: AppColors.primaryColor,
-      ));
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,9 +61,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         children: [
                           InkWell(
                               onTap: () {
-                                if (inWishList) {
-                                  removeFromWishList();
-                                } else {}
+                                if (controller.inWishList.value) {
+                                  controller.removeFromWishList(
+                                      widget.items.productId);
+                                } else {
+                                  controller.addToWishList(
+                                      widget.items.name,
+                                      widget.items.imageUrl,
+                                      widget.items.descritpion,
+                                      widget.items.price,
+                                      widget.items.productId);
+                                }
                               },
                               child: Obx(
                                 () => Icon(

@@ -59,23 +59,36 @@ class ProductDetailController extends GetxController {
     }
   }
 
-  Future<void> addToWishList(String name, String imageUrl, String description,
+  Future<void> addToWishList(String name, String imageUrl, String descritpion,
       String price, String productId) async {
     try {
       Items items = Items(
           name: name,
           imageUrl: imageUrl,
-          descritpion: description,
+          descritpion: descritpion,
           price: price,
           productId: productId);
       await firestore
-          .collection('users')
+          .collection('Users')
           .doc(auth.currentUser!.uid)
           .collection('wishList')
           .doc(productId)
           .set(items.toJson());
+      Get.snackbar("Added", "Item added to WishList");
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
-      Get.snackbar("Added", "Item Added to WishList");
+  Future<void> removeFromWishList(String productId) async {
+    try {
+      await firestore
+          .collection('Users')
+          .doc(auth.currentUser!.uid)
+          .collection('wishList')
+          .doc(productId)
+          .delete();
+      Get.snackbar("Removed", "Item remove from WishList");
     } catch (e) {
       debugPrint(e.toString());
     }

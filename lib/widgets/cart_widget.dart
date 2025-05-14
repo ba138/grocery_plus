@@ -17,11 +17,11 @@ class CartWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Image.network(
-                  items.imageUrl,
-                  height: 60,
-                  width: 60,
-                ),
+                // Image.network(
+                //   items.imageUrl,
+                //   height: 60,
+                //   width: 60,
+                // ),
                 const SizedBox(
                   width: 10,
                 ),

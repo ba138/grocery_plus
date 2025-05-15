@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:grocery_plus/controllers/favorite_controller.dart';
 import 'package:grocery_plus/widgets/favorite_card_widget.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -6,16 +8,25 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(FavoriteController());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Favorite Screen"),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-        child: ListView.builder(itemBuilder: (context, index) {
-          return FavoriteCardWidget();
-        }),
-      ),
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Obx(
+            () => ListView.builder(
+                itemCount: controller.wishItems.length,
+                itemBuilder: (context, index) {
+                  var item = controller.wishItems[index];
+                  return FavoriteCardWidget(
+                    ontap: () {
+                      controller.deleteItem(item.productId);
+                    },
+                  );
+                }),
+          )),
     );
   }
 }

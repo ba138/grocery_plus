@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:grocery_plus/constants/colors.dart';
 
 class FavoriteCardWidget extends StatelessWidget {
-  const FavoriteCardWidget({super.key});
+  final Function() ontap;
+  const FavoriteCardWidget({super.key, required this.ontap});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,12 @@ class FavoriteCardWidget extends StatelessWidget {
             ),
             Column(
               children: [
-                Icon(
-                  Icons.delete,
-                  color: AppColors.primaryColor,
+                InkWell(
+                  onTap: ontap,
+                  child: Icon(
+                    Icons.delete,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
                 SizedBox(
                   height: 10,

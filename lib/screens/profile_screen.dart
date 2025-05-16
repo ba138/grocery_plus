@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/utils.dart';
 import 'package:grocery_plus/Models/user_model.dart';
+import 'package:grocery_plus/controllers/user_controller.dart';
 import 'package:grocery_plus/screens/change_password_sceen.dart';
 import 'package:grocery_plus/screens/edit_profile_screen.dart';
 import 'package:grocery_plus/screens/login_screen.dart';
@@ -18,37 +21,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var auth = FirebaseAuth.instance;
   var firestore = FirebaseFirestore.instance;
   UserModel? currentUser;
-  Future<void> logout() async {
-    try {
-      await auth.signOut();
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (c) => LoginScreen()), (route) => false);
-    } on FirebaseAuthException catch (e) {
-      debugPrint("this is the error${e.code}");
-    }
-  }
 
-  Future<void> fetchCurrentUserData() async {
-    try {
-      var userData =
-          await firestore.collection("Users").doc(auth.currentUser!.uid).get();
-      if (userData.exists) {
-        setState(() {
-          currentUser = UserModel.fromMap(userData.data()!);
-        });
-      } else {
-        debugPrint("User data does not exist");
-      }
-    } catch (e) {
-      debugPrint("this is the error$e");
-    }
-  }
-
-  @override
-  void initState() {
-    fetchCurrentUserData();
-    super.initState();
-  }
+  var userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +36,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage(currentUser?.profilePic ??
+              backgroundImage: NetworkImage(userController
+                      .userModel.value?.profilePic ??
                   "https://www.pngall.com/wp-content/uploads/5/Avatar-Profile-PNG-Clipart.png"),
             ),
+            Text(userController.userModel.value?.username ?? "Loading"),
             Divider(
               color: Colors.grey.shade300,
               thickness: 1.5,
@@ -80,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (c) => EditProfileScreen(
-                                currentUser: currentUser!,
+                                currentUser: userController.userModel.value!,
                               )));
                 }),
             const SizedBox(
@@ -102,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leadingIcon: Icons.logout,
                 title: "Logout",
                 ontap: () {
-                  logout();
+                  userController.logout();
                 }),
           ],
         ),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_plus/Models/grocery_model.dart';
 import 'package:grocery_plus/constants/colors.dart';
 
 class FavoriteCardWidget extends StatelessWidget {
+  final Items item;
   final Function() ontap;
-  const FavoriteCardWidget({super.key, required this.ontap});
+  const FavoriteCardWidget(
+      {super.key, required this.ontap, required this.item});
 
   @override
   Widget build(BuildContext context) {

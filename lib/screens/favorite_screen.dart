@@ -21,6 +21,7 @@ class FavoriteScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var item = controller.wishItems[index];
                   return FavoriteCardWidget(
+                    item: item,
                     ontap: () {
                       controller.deleteItem(item.productId);
                     },

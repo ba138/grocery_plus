@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/utils.dart';
 import 'package:grocery_plus/Models/user_model.dart';
@@ -52,12 +53,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leadingIcon: Icons.edit,
                 title: "Edit Profile",
                 ontap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (c) => EditProfileScreen(
-                                currentUser: userController.userModel.value!,
-                              )));
+                  Get.to(() => EditProfileScreen(
+                        currentUser: userController.userModel.value!,
+                      ));
                 }),
             const SizedBox(
               height: 20,

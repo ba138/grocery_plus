@@ -91,4 +91,24 @@ class AuthController extends GetxController {
       debugPrint("this is the error$e");
     }
   }
+
+  sendlinkForResetPassword(String email) async {
+    if (email.isEmpty) {
+      Get.snackbar("Error", "Please Enter Your Email");
+
+      return;
+    }
+    Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+
+      Get.back();
+      Get.snackbar("Success", "Password Reset Link Sent Successfully");
+    } on FirebaseAuthException catch (e) {
+      Get.back();
+      debugPrint("this is the error${e.code}");
+    } finally {
+      Get.back();
+    }
+  }
 }

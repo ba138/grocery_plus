@@ -68,4 +68,47 @@ class AuthController extends GetxController {
       Get.back();
     }
   }
+
+  Future<void> changePassword(
+      String email, String oldPassword, String newPassword) async {
+    Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
+    try {
+      User? user = auth.currentUser;
+      if (user == null) {
+        Get.back();
+        Get.snackbar("Error", "User not found");
+
+        return;
+      }
+      var credential = await EmailAuthProvider.credential(
+          email: email, password: oldPassword);
+      await user.reauthenticateWithCredential(credential);
+      await user.updatePassword(newPassword);
+      Get.back();
+      Get.snackbar("Changed", "Password has been Changed");
+    } catch (e) {
+      Get.back();
+      debugPrint("this is the error$e");
+    }
+  }
+
+  sendlinkForResetPassword(String email) async {
+    if (email.isEmpty) {
+      Get.snackbar("Error", "Please Enter Your Email");
+
+      return;
+    }
+    Get.dialog(LoadingDialogWidget(), barrierDismissible: false);
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+
+      Get.back();
+      Get.snackbar("Success", "Password Reset Link Sent Successfully");
+    } on FirebaseAuthException catch (e) {
+      Get.back();
+      debugPrint("this is the error${e.code}");
+    } finally {
+      Get.back();
+    }
+  }
 }

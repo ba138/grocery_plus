@@ -7,6 +7,8 @@ class HomeController extends GetxController {
   var firestore = FirebaseFirestore.instance;
   var isloading = false.obs;
   var itemsList = <Items>[].obs;
+  var searchList = <Items>[].obs;
+  var isSearching = false.obs;
   void fetchData() async {
     isloading.value = true;
 
@@ -23,6 +25,16 @@ class HomeController extends GetxController {
       isloading.value = false;
       debugPrint("this is value of loading in final:${isloading.value}");
     }
+  }
+
+  void searchProduct(String query) {
+    if (query.trim().isEmpty) {
+      isSearching.value = false;
+      searchList.clear();
+    } else {}
+    searchList.assignAll(itemsList.where(
+        (item) => item.name.toLowerCase().contains(query.toLowerCase())));
+    isSearching.value = true;
   }
 
   @override

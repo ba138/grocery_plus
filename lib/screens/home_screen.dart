@@ -58,6 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 CustomTextField(
                     hintText: "Search here",
+                    onChanged: (value) {
+                      homeController.searchProduct(value);
+                    },
                     prefixIcon: Icon(Icons.search),
                     controller: searchController),
                 SizedBox(
@@ -84,22 +87,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else {
                     return Expanded(
                       child: GridView.builder(
-                        itemCount: homeController.itemsList.length,
+                        itemCount: homeController.isSearching.value
+                            ? homeController.searchList.length
+                            : homeController.itemsList.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisSpacing: 8,
                             crossAxisCount: 2,
                             mainAxisSpacing: 20),
                         itemBuilder: (context, index) {
+                          var isSearching = homeController.isSearching.value;
                           return HomeCardWidget(
-                            imageUrl: homeController.itemsList[index].imageUrl,
-                            title: homeController.itemsList[index].name,
+                            imageUrl: isSearching
+                                ? homeController.searchList[index].imageUrl
+                                : homeController.itemsList[index].imageUrl,
+                            title: isSearching
+                                ? homeController.searchList[index].name
+                                : homeController.itemsList[index].name,
                             rating: "0",
                             ontap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (c) => ProductDetailScreen(
-                                    items: homeController.itemsList[index],
+                                    items: isSearching
+                                        ? homeController.searchList[index]
+                                        : homeController.itemsList[index],
                                   ),
                                 ),
                               );
